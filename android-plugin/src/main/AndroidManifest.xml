@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.maksim.pianometronome.audio">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <application>
+        <meta-data android:name="org.godotengine.plugin.v2.PulseAudio"
+            android:value="com.maksim.pianometronome.audio.PulseAudioPlugin" />
+        <service android:name="com.maksim.pianometronome.audio.MetronomeService"
+            android:exported="false" android:foregroundServiceType="mediaPlayback" />
+    </application>
+</manifest>
