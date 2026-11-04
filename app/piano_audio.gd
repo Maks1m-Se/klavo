@@ -51,10 +51,16 @@ func note_on(midi: int) -> void:
     selected.player.play()
 
 func release_voice(voice: Dictionary) -> void:
-    if voice.tween != null and is_instance_valid(voice.tween): voice.tween.kill()
+    if voice.midi < 0 or not voice.player.playing: return
     var player: AudioStreamPlayer = voice.player
+    var start_db := player.volume_db
+    # The damper takes most of the energy quickly, then the string and body
+    # ring out quietly. Lower notes keep a slightly longer tail.
+    var pitch := clampf((float(voice.midi) - 21.0) / 87.0, 0.0, 1.0)
+    var tail_seconds := lerpf(0.33, 0.17, pitch)
     var tween := create_tween()
-    tween.tween_property(player, "volume_db", -65.0, 0.09)
+    tween.tween_property(player, "volume_db", start_db - 14.0, 0.035).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+    tween.tween_property(player, "volume_db", start_db - 58.0, tail_seconds)
     tween.tween_callback(player.stop)
     voice.tween = tween
     voice.held = false

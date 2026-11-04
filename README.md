@@ -6,11 +6,15 @@ A small instrument for checking pitches, trying chords and finding the tempo bef
 - **Metronome** — tap tempo, subdivisions, adjustable accents and local tempo favorites.
 - **Practice** — tempo trainer, silent bars, swing and polyrhythms.
 
-[Open the web app](https://maks1m-se.github.io/piano-metronome/) · [Download Android APK](https://github.com/Maks1m-Se/piano-metronome/releases/download/test-3/Klavo.apk)
+[Open the web app](https://maks1m-se.github.io/klavo/) · [Download Android APK](https://github.com/Maks1m-Se/klavo/releases/latest/download/Klavo.apk)
 
 The web app requires WebGL 2. The Android download is a debug-signed test APK for ARM64 phones and tablets running Android 8 or later.
 
 No account or ads. Piano recordings and the click engine are bundled in the app.
+
+| Piano | Metronome |
+| :---: | :---: |
+| <img src="https://maks1m-se.github.io/klavo/screenshots/piano.png" width="290" alt="Klavo piano keyboard in portrait orientation"> | <img src="https://maks1m-se.github.io/klavo/screenshots/metronome.png" width="290" alt="Klavo metronome with tempo, accents, and favorites"> |
 
 ## Build
 

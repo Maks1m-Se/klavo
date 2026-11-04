@@ -175,10 +175,14 @@ func build_ui() -> void:
     play_buttons.clear()
     ui = MarginContainer.new()
     ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-    var side_margin := maxi(16, int((size.x - 1100) / 2))
-    for edge in ["left", "right"]: ui.add_theme_constant_override("margin_" + edge, side_margin)
-    ui.add_theme_constant_override("margin_top", 12 if landscape else 24)
-    ui.add_theme_constant_override("margin_bottom", 12 if landscape else 20)
+    var side_margin := 12 if size.x < 400 else 16
+    var top_margin := 12 if landscape else 20
+    var bottom_margin := 12 if landscape else 16
+    var insets := display_insets()
+    ui.add_theme_constant_override("margin_left", side_margin + ceili(insets.position.x))
+    ui.add_theme_constant_override("margin_right", side_margin + ceili(insets.size.x))
+    ui.add_theme_constant_override("margin_top", top_margin + ceili(insets.position.y))
+    ui.add_theme_constant_override("margin_bottom", bottom_margin + ceili(insets.size.y))
     add_child(ui)
     var layout := VBoxContainer.new()
     layout.add_theme_constant_override("separation", 12 if landscape else 18)
@@ -199,15 +203,33 @@ func build_ui() -> void:
     header.add_child(settings_button)
     var content := VBoxContainer.new()
     content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-    layout.add_child(content)
-    if settings.view == "piano": build_piano(content)
-    else: build_metronome(content)
+    if settings.view == "piano":
+        layout.add_child(content)
+        build_piano(content)
+    else:
+        # Keep the navigation reachable even in a short or very narrow window.
+        var scroll := ScrollContainer.new()
+        scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+        scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+        content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+        layout.add_child(scroll)
+        scroll.add_child(content)
+        build_metronome(content)
     toast_label = label("", 12, true)
     toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     toast_label.hide()
     layout.add_child(toast_label)
     if not landscape: layout.add_child(make_nav())
     sync_transport()
+
+func display_insets() -> Rect2:
+    if not OS.has_feature("android"): return Rect2()
+    var physical := Vector2(DisplayServer.window_get_size())
+    var safe := Rect2(DisplayServer.get_display_safe_area())
+    if physical.x <= 0 or physical.y <= 0 or not safe.has_area(): return Rect2()
+    var scale_to_ui := size / physical
+    return Rect2(safe.position.max(Vector2.ZERO) * scale_to_ui,
+        (physical - safe.end).max(Vector2.ZERO) * scale_to_ui)
 
 func make_nav() -> HBoxContainer:
     var nav := HBoxContainer.new()
@@ -228,7 +250,7 @@ func change_view(view: String) -> void:
     build_ui()
 
 func build_piano(parent: VBoxContainer) -> void:
-    var controls := HBoxContainer.new()
+    var controls: Container = HFlowContainer.new() if size.x < 360 else HBoxContainer.new()
     parent.add_child(controls)
     var lower := button("−", change_octave.bind(-1), false, 36)
     lower.disabled = int(settings.octave) <= 1
@@ -237,7 +259,7 @@ func build_piano(parent: VBoxContainer) -> void:
     var higher := button("+", change_octave.bind(1), false, 36)
     higher.disabled = int(settings.octave) >= 6
     controls.add_child(higher)
-    controls.add_child(spacer())
+    if controls is HBoxContainer: controls.add_child(spacer())
     var sustain_button := button("Sustain", toggle_sustain)
     sustain_button.add_theme_font_size_override("font_size", 12)
     style_selected(sustain_button, bool(settings.sustain))
@@ -259,7 +281,7 @@ func build_piano(parent: VBoxContainer) -> void:
     keyboard.show_labels = bool(settings.labels)
     keyboard.compact = bool(settings.compact)
     keyboard.accent = colors.accent
-    keyboard.custom_minimum_size = Vector2(0, 130 if landscape else 220)
+    keyboard.custom_minimum_size = Vector2(0, 72)
     keyboard.size_flags_vertical = Control.SIZE_EXPAND_FILL
     keyboard.range_changed.connect(func(first, last): range_label.text = first + " — " + last)
     keyboard.note_pressed.connect(on_note_on)
@@ -276,7 +298,9 @@ func build_piano(parent: VBoxContainer) -> void:
     var mini := HBoxContainer.new()
     bpm_label = label(str(int(settings.bpm)) + " BPM", 16)
     mini.add_child(bpm_label)
-    var time_button := button(str(settings.time) + " · Metronome", change_view.bind("metronome"))
+    var time_text := str(settings.time) if size.x < 330 else str(settings.time) + " · Metronome"
+    var time_button := button(time_text, change_view.bind("metronome"))
+    time_button.tooltip_text = "Open metronome"
     time_button.add_theme_font_size_override("font_size", 12)
     mini.add_child(time_button)
     mini.add_child(spacer())
@@ -323,22 +347,25 @@ func build_metronome(parent: VBoxContainer) -> void:
     left.add_child(spacer(true))
     var tempo := HBoxContainer.new()
     tempo.alignment = BoxContainer.ALIGNMENT_CENTER
-    tempo.add_child(button("−", set_bpm.bind(int(settings.bpm) - 1), false, 48))
+    var narrow := size.x < 390 or (landscape and size.x < 680)
+    var step_width := 42 if narrow else 48
+    tempo.add_child(button("−", set_bpm.bind(int(settings.bpm) - 1), false, step_width))
     tempo_input = LineEdit.new()
     tempo_input.text = str(int(settings.bpm))
     tempo_input.alignment = HORIZONTAL_ALIGNMENT_CENTER
-    tempo_input.custom_minimum_size = Vector2(174, 100)
+    tempo_input.custom_minimum_size = Vector2(138, 80) if narrow else Vector2(174, 100)
+    tempo_input.add_theme_constant_override("minimum_character_width", 1)
     tempo_input.expand_to_text_length = false
     tempo_input.max_length = 3
     tempo_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-    tempo_input.add_theme_font_size_override("font_size", 82)
+    tempo_input.add_theme_font_size_override("font_size", 62 if narrow else 82)
     tempo_input.add_theme_stylebox_override("normal", box(colors.background, colors.background, 0, 0))
     tempo_input.add_theme_stylebox_override("focus", box(colors.background, colors.accent, 1, 8))
     tempo_input.text_submitted.connect(commit_tempo_text)
     tempo_input.focus_exited.connect(func():
         if is_instance_valid(tempo_input): commit_tempo_text(tempo_input.text))
     tempo.add_child(tempo_input)
-    tempo.add_child(button("+", set_bpm.bind(int(settings.bpm) + 1), false, 48))
+    tempo.add_child(button("+", set_bpm.bind(int(settings.bpm) + 1), false, step_width))
     left.add_child(tempo)
     var unit := label("BPM · " + beat_unit().to_upper(), 11, true)
     unit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -358,7 +385,7 @@ func build_metronome(parent: VBoxContainer) -> void:
     right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     if landscape: right.size_flags_vertical = Control.SIZE_EXPAND_FILL
     columns.add_child(right)
-    var pattern := HBoxContainer.new()
+    var pattern: BoxContainer = VBoxContainer.new() if size.x < 300 else HBoxContainer.new()
     pattern.add_child(select_field("Time signature", TIMES, TIMES.find(settings.time), on_time_changed))
     pattern.add_child(select_field("Subdivision", ["Beat", "2 per beat", "3 per beat", "4 per beat"], mini(int(settings.subdivision) - 1, 3), on_subdivision_changed))
     right.add_child(pattern)

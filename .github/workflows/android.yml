@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/android.yml'
+      - 'export_presets.cfg'
 
 permissions:
   contents: write
@@ -45,5 +46,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="test-${GITHUB_RUN_NUMBER}"
-          gh release create "$tag" build/Klavo.apk --target "$GITHUB_SHA" --prerelease --title "Android test build ${GITHUB_RUN_NUMBER}" --notes "ARM64 APK for testing on Android 8 and newer. This APK uses a debug signature."
+          tag="v$(sed -n 's/^config\/version="\([^"]*\)"$/\1/p' project.godot)"
+          if gh release view "$tag" >/dev/null 2>&1; then exit 0; fi
+          gh release create "$tag" build/Klavo.apk --target "$GITHUB_SHA" --title "Klavo $tag" --notes "ARM64 APK for testing on Android 8 and newer. This APK uses a debug signature."
