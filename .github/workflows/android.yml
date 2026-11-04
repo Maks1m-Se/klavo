@@ -22,9 +22,11 @@ jobs:
       - name: Install Android SDK packages
         run: |
           sdk="$RUNNER_TEMP/android-sdk"
+          mkdir -p "$sdk/cmdline-tools"
           curl -fsSL --retry 3 https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o "$RUNNER_TEMP/android-tools.zip"
           unzip -oq "$RUNNER_TEMP/android-tools.zip" -d "$sdk/cmdline-tools"
-          manager="$sdk/cmdline-tools/cmdline-tools/bin/sdkmanager"
+          mv "$sdk/cmdline-tools/cmdline-tools" "$sdk/cmdline-tools/latest"
+          manager="$sdk/cmdline-tools/latest/bin/sdkmanager"
           set +o pipefail
           yes | "$manager" --sdk_root="$sdk" --licenses
           set -o pipefail
