@@ -1,0 +1,182 @@
+[
+  {
+    "name": "A0.ogg",
+    "bytes": 397686,
+    "sha256": "300282045d8b52193531806c7c8e387b4d4aaf52094e2d0f4d3d6e275a8a50d4",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A0.ogg"
+  },
+  {
+    "name": "A1.ogg",
+    "bytes": 381920,
+    "sha256": "5e9352daf24354b416aba1080f89b96695b8b69174810d2506e537296faa3875",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A1.ogg"
+  },
+  {
+    "name": "A2.ogg",
+    "bytes": 263698,
+    "sha256": "0815bcf27821edcaf62dac8841249e3e9a2fdc90f8f53369c167db02b4b0d6d6",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A2.ogg"
+  },
+  {
+    "name": "A3.ogg",
+    "bytes": 258086,
+    "sha256": "5b35a9b77bd3f192cb6cfc6ade81d6bc8b589b540818fff0ad3223b199d0a76f",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A3.ogg"
+  },
+  {
+    "name": "A4.ogg",
+    "bytes": 221173,
+    "sha256": "cdcc20a09e671254b36df895d75085881eba1f46e546bb4e0aaa521ca7f3b175",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A4.ogg"
+  },
+  {
+    "name": "A5.ogg",
+    "bytes": 176156,
+    "sha256": "c240903dc12e992af240ea38c550ee7915247a2f03b1141626695ed7c929e356",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A5.ogg"
+  },
+  {
+    "name": "A6.ogg",
+    "bytes": 114757,
+    "sha256": "25b2fe436de89efdc75a63dd87c01180fe7a4391802a163112ad4f927a0650ac",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A6.ogg"
+  },
+  {
+    "name": "A7.ogg",
+    "bytes": 69360,
+    "sha256": "5d66484d8c2c95fc79ff02837c61fcdd5dd6e088324a499d1117da8b7e544190",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/A7.ogg"
+  },
+  {
+    "name": "C1.ogg",
+    "bytes": 378472,
+    "sha256": "6e18f65d2746f397408bc9c169b783c5b023f819534fb646a24416f9c5bb01f1",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C1.ogg"
+  },
+  {
+    "name": "C2.ogg",
+    "bytes": 369529,
+    "sha256": "68fab6a76ca8f38477e21da0cced8f82cb4511352920d9b972026f198e7681d4",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C2.ogg"
+  },
+  {
+    "name": "C3.ogg",
+    "bytes": 263870,
+    "sha256": "8485c3dc9aac616a4e37f2cbeec9af104be214795742d66c12f6acc013451b38",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C3.ogg"
+  },
+  {
+    "name": "C4.ogg",
+    "bytes": 265879,
+    "sha256": "2be981a53705511b8d3d6087a5fa360d676c2f406cc5a6f0698a9c6473fa83a3",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C4.ogg"
+  },
+  {
+    "name": "C5.ogg",
+    "bytes": 256407,
+    "sha256": "9d428f292793d02923912289827527a1bd99ed7d36bf388780519e498d8f3fad",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C5.ogg"
+  },
+  {
+    "name": "C6.ogg",
+    "bytes": 107642,
+    "sha256": "ade52fe2a605b70e752eaf47559be4f495b78d2872f5f1a1a299dfa3617a3be5",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C6.ogg"
+  },
+  {
+    "name": "C7.ogg",
+    "bytes": 70568,
+    "sha256": "8fc9a09e1be46ea109de4766958fd33c8f1fe6992f1498f77351d835b865ac53",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C7.ogg"
+  },
+  {
+    "name": "C8.ogg",
+    "bytes": 68554,
+    "sha256": "dfdcefc1ab0e7fbe2ff8af121ff9a74a7055e7b9eba6ffa497ca744e57d22b1b",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/C8.ogg"
+  },
+  {
+    "name": "Ds1.ogg",
+    "bytes": 393097,
+    "sha256": "0696e0731725ecb76526a4a8d4f5c04c241cf0ba21e0381c9a9abeed1a2ebdc0",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds1.ogg"
+  },
+  {
+    "name": "Ds2.ogg",
+    "bytes": 364446,
+    "sha256": "67b2f0226935ce5abffdeafc1bf9192983c14e50c2f6928dd953fc83a8887352",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds2.ogg"
+  },
+  {
+    "name": "Ds3.ogg",
+    "bytes": 261623,
+    "sha256": "d50ede52eadbc11d5ab0459e1005efa01d173114ae11c514605f2e43a7789b27",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds3.ogg"
+  },
+  {
+    "name": "Ds4.ogg",
+    "bytes": 259127,
+    "sha256": "51ef26e11a73aab5ba0b9104f660036a5d6cc23e847c3e18a50cfc334d796062",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds4.ogg"
+  },
+  {
+    "name": "Ds5.ogg",
+    "bytes": 210822,
+    "sha256": "8cf89a06dd01efb3ef4aba33238ddd0ac5d06a3fa995512b98aa2e12b36f800a",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds5.ogg"
+  },
+  {
+    "name": "Ds6.ogg",
+    "bytes": 115290,
+    "sha256": "a78d905588afe818a9e615af970ef360ff4a107d6cf8f49af046fbc58ecc0102",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds6.ogg"
+  },
+  {
+    "name": "Ds7.ogg",
+    "bytes": 83051,
+    "sha256": "5899f8419c46410266eca2feeba61871aeebb2297a8674b88637dd15f8b63bfe",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Ds7.ogg"
+  },
+  {
+    "name": "Fs1.ogg",
+    "bytes": 367881,
+    "sha256": "99361c6323815e4d1af971e8bbebd75d8c103fe6c0a739fe81f775861b8474d6",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs1.ogg"
+  },
+  {
+    "name": "Fs2.ogg",
+    "bytes": 337880,
+    "sha256": "a61ff7a98f7b81a482052ff6d6cbeb2ed7a882bc9bf2adeb09ca2d711074861a",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs2.ogg"
+  },
+  {
+    "name": "Fs3.ogg",
+    "bytes": 264396,
+    "sha256": "aa77774f7b9bb4d051796fdcfb5a61db6b35c7d9b4e1f0c3df69896dd1b4b015",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs3.ogg"
+  },
+  {
+    "name": "Fs4.ogg",
+    "bytes": 238720,
+    "sha256": "1b75e47f852f215612acfbe3698ede653b01f6cfc5469f4d4c5a8da93d96c34e",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs4.ogg"
+  },
+  {
+    "name": "Fs5.ogg",
+    "bytes": 194579,
+    "sha256": "a23b0e9fab39906a7e6f22b529f93e1e61830540fa18680ad73c8bc353f6cc24",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs5.ogg"
+  },
+  {
+    "name": "Fs6.ogg",
+    "bytes": 101096,
+    "sha256": "1c743220a68139f370086214ef483f9884d61c2d5fb0c40b69e1ca561a2bc142",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs6.ogg"
+  },
+  {
+    "name": "Fs7.ogg",
+    "bytes": 86131,
+    "sha256": "8427b15ce3ce69000c0358648026ce77fc9d5b5a6d5c7d23b71f3e085da245a1",
+    "url": "https://raw.githubusercontent.com/Tonejs/audio/master/salamander/Fs7.ogg"
+  }
+]
