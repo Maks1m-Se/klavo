@@ -26,4 +26,4 @@ if [[ ! -f "$settings" ]]; then
   printf '[gd_resource type="EditorSettings" format=3]\n\n[resource]\nexport/android/java_sdk_path = "%s"\nexport/android/android_sdk_path = "%s"\n' "$jdk" "$sdk" > "$settings"
 fi
 "$engine" --headless --editor --import --quit
-"$engine" --headless --install-android-build-template --export-debug Android build/Piano-Metronome.apk
+"$engine" --headless --install-android-build-template --export-debug Android build/Klavo.apk

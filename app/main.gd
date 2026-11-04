@@ -22,6 +22,8 @@ var keyboard: PianoKeyboard
 var range_label: Label
 var note_label: Label
 var status_label: Label
+var tap_button: Button
+var tap_flash_until := 0
 var tempo_input: LineEdit
 var bpm_label: Label
 var play_buttons: Array[Button] = []
@@ -100,7 +102,7 @@ func make_theme() -> Theme:
         result.set_color("font_focus_color", type, colors.text)
     for type in ["Button", "OptionButton"]:
         result.set_stylebox("normal", type, box(colors.surface, colors.line))
-        result.set_stylebox("hover", type, box(colors.soft, colors.muted))
+        result.set_stylebox("hover", type, box(colors.raised, colors.muted))
         result.set_stylebox("pressed", type, box(colors.soft, colors.accent))
         result.set_stylebox("focus", type, box(Color.TRANSPARENT, colors.accent, 2))
         result.set_stylebox("disabled", type, box(colors.background, colors.line))
@@ -185,10 +187,10 @@ func build_ui() -> void:
     layout.add_child(header)
     var titlebox := VBoxContainer.new()
     titlebox.add_theme_constant_override("separation", 2)
-    titlebox.add_child(label("Piano" if settings.view == "piano" else "Metronome", 21 if landscape else 25))
-    status_label = label("Grand piano" if settings.view == "piano" else mode_status(), 12, true)
-    if not landscape: titlebox.add_child(status_label)
-    else: status_label.hide()
+    titlebox.add_child(label("Klavo", 21 if landscape else 25))
+    status_label = label("Piano & Metronome" if settings.view == "piano" else mode_status(), 12, true)
+    titlebox.add_child(status_label)
+    status_label.visible = not landscape
     header.add_child(titlebox)
     header.add_child(spacer())
     if landscape: header.add_child(make_nav())
@@ -378,10 +380,11 @@ func build_metronome(parent: VBoxContainer) -> void:
     play.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     transport.add_child(play)
     play_buttons.append(play)
-    var tap := button("Tap Tempo", tap_tempo)
-    tap.custom_minimum_size.y = 54
-    tap.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    transport.add_child(tap)
+    tap_button = button("Tap Tempo", tap_tempo)
+    tap_button.custom_minimum_size.y = 54
+    tap_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    transport.add_child(tap_button)
+    update_tap_flash()
     right.add_child(transport)
     var advanced := button("Advanced" if settings.mode == "Basic" else "Advanced · " + str(settings.mode), open_advanced)
     advanced.add_theme_font_size_override("font_size", 12)
@@ -446,7 +449,8 @@ func update_beats(current: int) -> void:
         b.text = "−" if strength == 0 else str(i + 1)
         b.tooltip_text = "Beat " + str(i + 1) + ": " + ["muted", "normal", "accented"][strength]
         var fill: Color = colors.soft if strength == 2 else colors.surface if strength == 1 else colors.background
-        var border: Color = colors.accent if i == current or strength == 2 else colors.line
+        if i == current: fill = colors.soft
+        var border: Color = (colors.downbeat if i == 0 else colors.accent) if i == current else colors.line
         b.add_theme_stylebox_override("normal", box(fill, border, 3 if i == current else 1, 22))
     last_beat = current
 
@@ -501,7 +505,19 @@ func add_favorite() -> void:
     save_settings()
     draw_favorites()
 
+func update_tap_flash() -> void:
+    if not is_instance_valid(tap_button): return
+    if tap_flash_until > Time.get_ticks_msec():
+        var flash := box(colors.raised, colors.downbeat, 2)
+        for state in ["normal", "hover", "pressed"]:
+            tap_button.add_theme_stylebox_override(state, flash)
+    else:
+        for state in ["normal", "hover", "pressed"]:
+            tap_button.remove_theme_stylebox_override(state)
+
 func tap_tempo() -> void:
+    tap_flash_until = Time.get_ticks_msec() + 150
+    update_tap_flash()
     var now := Time.get_ticks_usec() / 1000000.0
     if not taps.is_empty() and now - taps.back() > 4.0: taps.clear()
     taps.append(now)
@@ -541,6 +557,9 @@ func sync_transport() -> void:
     if not clock.running: update_beats(-1)
 
 func _process(_delta: float) -> void:
+    if tap_flash_until > 0 and Time.get_ticks_msec() >= tap_flash_until:
+        tap_flash_until = 0
+        update_tap_flash()
     if clock == null: return
     if clock.running != clock_was_running: sync_transport()
     if clock.running:

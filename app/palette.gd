@@ -1,18 +1,17 @@
 extends RefCounted
 class_name AppPalette
 
-# App accents can be replaced independently of the classical piano keys.
 const DARK := {
-    "background": Color("14161a"), "surface": Color("23262c"),
-    "text": Color("f5f5f5"), "muted": Color("a9adb6"),
-    "line": Color("454951"), "accent": Color("dddddf"),
-    "on_accent": Color("17181c"), "soft": Color("35383f")
+    "background": Color("121614"), "surface": Color("1c2220"), "raised": Color("26302c"),
+    "text": Color("ecefea"), "muted": Color("8e9a93"), "line": Color("2e3833"),
+    "accent": Color("a8c8b0"), "on_accent": Color("121614"), "soft": Color("2f4236"),
+    "downbeat": Color("e8b04b"), "danger": Color("d96a50")
 }
 const LIGHT := {
-    "background": Color("f6f6f7"), "surface": Color("e9eaed"),
-    "text": Color("202127"), "muted": Color("5c606b"),
-    "line": Color("b9bec8"), "accent": Color("343740"),
-    "on_accent": Color("ffffff"), "soft": Color("d9dce3")
+    "background": Color("f4f5f0"), "surface": Color("e8ece7"), "raised": Color("dce4dd"),
+    "text": Color("1a2520"), "muted": Color("4e5d55"), "line": Color("bdc9c0"),
+    "accent": Color("315840"), "on_accent": Color("ffffff"), "soft": Color("d5e6d8"),
+    "downbeat": Color("99620b"), "danger": Color("a33725")
 }
 
 static func colors(light: bool) -> Dictionary:

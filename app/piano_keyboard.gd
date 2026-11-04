@@ -8,7 +8,7 @@ signal range_changed(first: String, last: String)
 var octave := 3
 var show_labels := true
 var compact := false
-var accent := Color("cccccc")
+var accent := Color("a8c8b0")
 var white_keys: Array[Dictionary] = []
 var black_keys: Array[Dictionary] = []
 var fingers: Dictionary = {}
@@ -48,17 +48,15 @@ func _draw() -> void:
     var font: Font = ThemeDB.fallback_font
     for key in white_keys:
         var rect: Rect2 = key.rect
-        draw_style_box(key_style(Color.WHITE, Color("b0b0b0"), 1), rect)
-        if active.has(key.midi):
-            draw_rect(Rect2(rect.position.x + 2, size.y - 8, rect.size.x - 4, 5), accent)
+        draw_style_box(key_style(Color("a8c8b0") if active.has(key.midi) else Color("efece3"), Color("cfcbbf"), 1), rect)
         if show_labels:
             var label: String = note_name(key.midi) if key.midi % 12 == 0 else NAMES[key.midi % 12]
             var text_size: Vector2 = font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, 12)
-            draw_string(font, Vector2(rect.position.x + (rect.size.x - text_size.x) / 2, size.y - 22), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("343434"))
+            draw_string(font, Vector2(rect.position.x + (rect.size.x - text_size.x) / 2, size.y - 22), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("3e4a43"))
     for key in black_keys:
         var rect: Rect2 = key.rect
-        draw_style_box(key_style(Color("111111"), Color("000000"), 1), rect)
-        draw_line(Vector2(rect.position.x + 3, rect.end.y - 5), Vector2(rect.end.x - 3, rect.end.y - 5), Color("292929"), 2)
+        draw_style_box(key_style(Color("1a1f1c"), Color("121614"), 1), rect)
+        draw_line(Vector2(rect.position.x + 3, rect.end.y - 5), Vector2(rect.end.x - 3, rect.end.y - 5), Color("2e3833"), 2)
         if active.has(key.midi):
             draw_rect(Rect2(rect.position.x + 3, rect.end.y - 11, rect.size.x - 6, 4), accent)
 
@@ -110,12 +108,12 @@ func _gui_input(event: InputEvent) -> void:
     elif event is InputEventScreenDrag:
         press_finger(event.index, event.position)
         accept_event()
-    elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+    elif event is InputEventMouseButton and event.device != InputEvent.DEVICE_ID_EMULATION and event.button_index == MOUSE_BUTTON_LEFT:
         mouse_down = event.pressed
         if mouse_down: press_finger(-1, event.position)
         else: release_finger(-1)
         accept_event()
-    elif event is InputEventMouseMotion and mouse_down:
+    elif event is InputEventMouseMotion and event.device != InputEvent.DEVICE_ID_EMULATION and mouse_down:
         press_finger(-1, event.position)
         accept_event()
 

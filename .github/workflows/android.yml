@@ -1,6 +1,10 @@
 name: Build Android test APK
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/android.yml'
 
 permissions:
   contents: write
@@ -11,24 +15,33 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
       - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-36" "build-tools;36.1.0"
+        run: |
+          sdk="$RUNNER_TEMP/android-sdk"
+          curl -fsSL --retry 3 https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o "$RUNNER_TEMP/android-tools.zip"
+          unzip -oq "$RUNNER_TEMP/android-tools.zip" -d "$sdk/cmdline-tools"
+          manager="$sdk/cmdline-tools/cmdline-tools/bin/sdkmanager"
+          set +o pipefail
+          yes | "$manager" --sdk_root="$sdk" --licenses
+          set -o pipefail
+          "$manager" --sdk_root="$sdk" "platform-tools" "platforms;android-36" "build-tools;36.1.0" "ndk;29.0.14206865"
+          printf 'ANDROID_HOME=%s\nANDROID_SDK_ROOT=%s\n' "$sdk" "$sdk" >> "$GITHUB_ENV"
       - name: Install Godot
         run: bash scripts/install-godot.sh android
       - name: Export Android APK
         run: bash scripts/build-android.sh
       - name: Verify the APK signature and permissions
         run: |
-          "$ANDROID_HOME/build-tools/36.1.0/apksigner" verify --print-certs build/Piano-Metronome.apk
-          "$ANDROID_HOME/build-tools/36.1.0/aapt" dump badging build/Piano-Metronome.apk
-          "$ANDROID_HOME/build-tools/36.1.0/aapt" dump xmltree build/Piano-Metronome.apk AndroidManifest.xml | grep 'com.maksim.pianometronome.audio.MetronomeService'
+          "$ANDROID_HOME/build-tools/36.1.0/apksigner" verify --print-certs build/Klavo.apk
+          "$ANDROID_HOME/build-tools/36.1.0/aapt" dump badging build/Klavo.apk
+          "$ANDROID_HOME/build-tools/36.1.0/aapt" dump xmltree build/Klavo.apk AndroidManifest.xml | grep 'com.maksim.pianometronome.audio.MetronomeService'
       - name: Publish test download
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           tag="test-${GITHUB_RUN_NUMBER}"
-          gh release create "$tag" build/Piano-Metronome.apk --target "$GITHUB_SHA" --prerelease --title "Android test build ${GITHUB_RUN_NUMBER}" --notes "ARM64 APK for testing on Android 8 and newer. This APK uses a debug signature."
+          gh release create "$tag" build/Klavo.apk --target "$GITHUB_SHA" --prerelease --title "Android test build ${GITHUB_RUN_NUMBER}" --notes "ARM64 APK for testing on Android 8 and newer. This APK uses a debug signature."

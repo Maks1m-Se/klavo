@@ -16,3 +16,5 @@ addons/pulse_audio/bin/
 
 assets/piano/*.ogg
 assets/piano/*.ogg.import
+
+android/.build_version
