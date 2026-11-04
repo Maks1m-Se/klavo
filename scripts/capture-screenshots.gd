@@ -4,9 +4,12 @@ func _initialize() -> void:
     capture.call_deferred()
 
 func capture() -> void:
-    root.size = Vector2i(420, 800)
+    var viewport := SubViewport.new()
+    viewport.size = Vector2i(420, 800)
+    viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+    root.add_child(viewport)
     var app: Variant = load("res://app/main.tscn").instantiate()
-    root.add_child(app)
+    viewport.add_child(app)
     app.settings.appearance = "dark"
     app.settings.keep_awake = false
     app.settings.octave = 3
@@ -19,10 +22,11 @@ func capture() -> void:
         app.build_ui()
         for i in 4:
             await process_frame
-        await RenderingServer.frame_post_draw
-        var image := root.get_texture().get_image()
-        if image == null or image.save_png(directory.path_join(view + ".png")) != OK:
+        RenderingServer.force_draw(false)
+        var image := viewport.get_texture().get_image()
+        if image == null or image.is_empty() or image.save_png(directory.path_join(view + ".png")) != OK:
             push_error("Could not capture the " + view + " screenshot")
             quit(1)
             return
+        print("Captured ", view, " at ", image.get_size())
     quit()
